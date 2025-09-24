@@ -407,12 +407,6 @@ lsof -ti:8080 | xargs kill -9
 
 本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情
 
-## 📞 联系我们
-
-- 项目作者：[宁波企业门户团队]
-- 邮箱：[contact@ningbo-portal.com]
-- 项目链接：[https://github.com/your-username/dningbo_portal_ui]
-
 ## 📝 更新日志
 
 ### v1.1.0 (2025-09-24)
