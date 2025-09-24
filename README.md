@@ -88,16 +88,16 @@
 #### Windows用户
 ```bash
 # 使用批处理脚本启动
-start-with-mysql.bat
+start.bat
 ```
 
 #### Linux/Mac用户
 ```bash
 # 给脚本执行权限
-chmod +x start-with-mysql.sh
+chmod +x start.sh
 
 # 启动系统
-./start-with-mysql.sh
+./start.sh
 ```
 
 ### 手动启动
@@ -305,8 +305,8 @@ dningbo_portal_ui/
 │   │   └── init.sql
 │   └── pom.xml              # Maven配置
 │
-├── start-with-mysql.bat     # Windows启动脚本(MySQL版)
-├── start-with-mysql.sh      # Linux/Mac启动脚本(MySQL版)
+├── start.bat     # Windows启动脚本(MySQL版)
+├── start.sh      # Linux/Mac启动脚本(MySQL版)
 ├── start.bat                # Windows启动脚本(H2版)
 ├── start.sh                 # Linux/Mac启动脚本(H2版)
 ├── DEPLOYMENT.md            # 部署指南
@@ -359,7 +359,7 @@ lsof -ti:8080 | xargs kill -9
 #### 切换数据库
 
 **使用MySQL（推荐）**：
-- 使用 `start-with-mysql.bat` 或 `start-with-mysql.sh`
+- 使用 `start.bat` 或 `start.sh`
 - 修改 `backend/src/main/resources/application.properties` 中的数据库配置
 
 **使用H2（开发测试）**：
