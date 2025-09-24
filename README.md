@@ -8,18 +8,20 @@
 - ✨ **丰富动画效果** - 使用 Framer Motion 实现流畅的页面动画
 - 🔐 **完整权限管理** - JWT认证 + 角色权限控制
 - 📱 **响应式布局** - 支持PC、平板、手机等多种设备
-- ⚡ **高性能** - Next.js 14 App Router + Spring Boot 2.7
+- ⚡ **高性能** - Next.js 15 App Router + Spring Boot 2.7
 - 🗄️ **MySQL数据库** - 可靠的数据存储方案
 - 🛡️ **安全防护** - Spring Security + CORS配置
+- 💬 **留言系统** - 支持用户在线留言咨询
 
 ## 🏗️ 技术栈
 
 ### 前端
-- **Next.js 14** - React全栈框架
-- **TypeScript** - 类型安全的JavaScript
-- **Tailwind CSS** - 实用优先的CSS框架
-- **Framer Motion** - 动画库
-- **React Hook Form** - 表单管理
+- **Next.js 15.5.3** - React全栈框架
+- **React 19.1.0** - 最新版本的React
+- **TypeScript 5** - 类型安全的JavaScript
+- **Tailwind CSS 4** - 实用优先的CSS框架
+- **Framer Motion 12** - 动画库
+- **Lucide React** - 精美的图标库
 
 ### 后端
 - **Spring Boot 2.7.18** - Java企业级框架
@@ -35,8 +37,9 @@
 - 🏠 **首页** - 企业介绍、产品展示、新闻动态
 - 🏢 **关于我们** - 公司简介、发展历程、企业文化
 - 📦 **产品服务** - 产品展示、服务介绍
-- 📞 **联系我们** - 联系方式、地理位置
+- 📞 **联系我们** - 联系方式、在线留言、地理位置
 - ✨ **滚动动画** - 丰富的页面交互效果
+- 💬 **用户留言** - 支持在线留言咨询，支持中文UTF-8编码
 
 ### 后台管理
 - 🔐 **用户认证** - 登录/登出、JWT令牌管理
@@ -44,6 +47,7 @@
 - 🏢 **企业信息管理** - 公司信息的维护
 - 📦 **产品管理** - 产品信息的发布和编辑
 - 📰 **新闻管理** - 新闻文章的管理
+- 💬 **留言管理** - 用户留言的查看、回复和管理
 - ⚙️ **系统配置** - 全局配置参数管理
 - 📊 **仪表盘** - 数据统计和系统概览
 
@@ -199,7 +203,7 @@ Authorization: Bearer {token}
 
 #### 获取企业信息
 ```http
-GET /api/company
+GET /api/company/main
 ```
 
 #### 获取产品列表
@@ -211,6 +215,40 @@ GET /api/products
 ```http
 GET /api/news
 ```
+
+#### 提交用户留言
+```http
+POST /api/messages
+Content-Type: application/json; charset=utf-8
+
+{
+  "name": "用户姓名",
+  "email": "user@example.com",
+  "phone": "13800138000",
+  "company": "公司名称",
+  "subject": "留言主题",
+  "content": "留言内容"
+}
+```
+
+**响应**：
+```json
+{
+  "id": 1,
+  "name": "用户姓名",
+  "email": "user@example.com",
+  "phone": "13800138000",
+  "company": "公司名称",
+  "subject": "留言主题",
+  "content": "留言内容",
+  "isRead": false,
+  "isReplied": false,
+  "createdAt": "2025-09-24T15:38:49.773",
+  "updatedAt": "2025-09-24T15:38:49.773"
+}
+```
+
+> **注意**：留言接口支持UTF-8中文编码，如果 subject 为空，系统会自动设置为“留言咨询”
 
 ## 📁 项目结构
 
@@ -275,6 +313,45 @@ dningbo_portal_ui/
 └── README.md                # 项目说明
 ```
 
+## 🔧 常见问题解决
+
+### 留言接口问题
+
+**问题**：提交留言时返回 403 Forbidden 错误
+
+**解决方案**：
+1. 检查 Spring Security 配置，确保 `/api/messages` 接口允许匿名访问
+2. 确认请求头包含 `Content-Type: application/json; charset=utf-8`
+
+**问题**：中文字符显示乱码
+
+**解决方案**：
+1. 确保请求头包含 `charset=utf-8`
+2. 检查数据库连接配置中的编码设置
+
+### 端口冲突问题
+
+**问题**：启动时提示 "Port 8080 is already in use"
+
+**解决方案**：
+```bash
+# Windows
+netstat -ano | findstr :8080
+taskkill /PID <PID号> /F
+
+# Linux/Mac
+lsof -ti:8080 | xargs kill -9
+```
+
+### 数据库连接问题
+
+**问题**：无法连接到 MySQL 数据库
+
+**解决方案**：
+1. 确认 MySQL 服务已启动
+2. 检查数据库配置信息（用户名、密码、数据库名）
+3. 确认数据库已创建并执行了初始化脚本
+
 ## 🛠️ 开发指南
 
 ### 数据库管理
@@ -335,6 +412,42 @@ dningbo_portal_ui/
 - 项目作者：[宁波企业门户团队]
 - 邮箱：[contact@ningbo-portal.com]
 - 项目链接：[https://github.com/your-username/dningbo_portal_ui]
+
+## 📝 更新日志
+
+### v1.1.0 (2025-09-24)
+
+#### 新增功能
+- ✅ **留言系统**：完整的用户留言功能
+- ✅ **UTF-8支持**：完全支持中文字符编码
+- ✅ **权限优化**：留言接口免认证访问
+
+#### 问题修复
+- 🔧 修复留言接口 403 Forbidden 错误
+- 🔧 解决中文字符编码问题
+- 🔧 优化字段验证规则，支持可选主题
+
+#### 技术升级
+- ⬆️ Next.js 升级至 15.5.3
+- ⬆️ React 升级至 19.1.0
+- ⬆️ Tailwind CSS 升级至 v4
+
+### v1.0.0 (2025-09-23)
+
+#### 初始版本
+- ✅ 基础企业门户网站功能
+- ✅ 管理后台系统
+- ✅ JWT 认证系统
+- ✅ 响应式设计
+- ✅ MySQL 数据库支持
+
+---
+
+## 🔗 相关链接
+
+- [📝 部署指南](./DEPLOYMENT.md)
+- [📊 API 文档](待补充)
+- [📝 更新日志](待补充)
 
 ---
 
